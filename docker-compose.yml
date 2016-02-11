@@ -1,0 +1,7 @@
+go-server:
+   hostname: go-server
+   container_name: go-server
+   image: qnib/go-server
+   ports:
+    - 8153:8153
+    - 8154:8154
