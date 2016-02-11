@@ -9,3 +9,15 @@ RUN apk update && \
     unzip -q /tmp/go-server.zip && rm -f /tmp/go-server.zip && \
     mv /opt/go-server-${GOCD_VER} /opt/go-server && \
     rm -rf /var/cache/apk/* /tmp/*
+RUN chmod +x /opt/go-server/*server.sh
+ENV DOCKER_TASK_VER=0.1.23 \
+    SCRIPT_EXEC_VER=0.2
+RUN mkdir -p /opt/go-server/plugins/external/ && \
+    cd /opt/go-server/plugins/external/ && \
+    wget -q https://github.com/manojlds/gocd-docker/releases/download/${DOCKER_TASK_VER}/docker-task-assembly-${DOCKER_TASK_VER}.jar && \
+    wget -q https://github.com/gocd-contrib/script-executor-task/releases/download/${SCRIPT_EXEC_VER}/script-executor-${SCRIPT_EXEC_VER}.jar
+RUN apk update && \
+    apk add git
+ADD etc/init.d/go-server /etc/init.d/
+RUN ln -s /etc/init.d/go-server /etc/runlevels/default/
+ADD etc/conf.d/go-server /etc/conf.d/

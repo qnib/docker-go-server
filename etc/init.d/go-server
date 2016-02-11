@@ -1,0 +1,15 @@
+#!/sbin/runscript
+  
+start() {
+    ebegin "Starting go-server"
+    export JAVA_HOME=/opt/jdk
+    /opt/go-server/server.sh 1>/var/log/go-server.stdout 2>/var/log/go-server.stderr &
+    echo $$ > /opt/go-server/go-server.pid
+    eend $?
+}
+  
+stop() {
+    ebegin "Stopping go-server"
+    /opt/go-server/stop-server.sh
+    eend $?
+}
