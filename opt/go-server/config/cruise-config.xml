@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cruise xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cruise-config.xsd" schemaVersion="77">
-  <server artifactsdir="artifacts" commandRepositoryLocation="default" serverId="82f138d2-b025-4258-81a6-e463518682f9" agentAutoRegisterKey="AFFEE112233445566" />
+  <server artifactsdir="artifacts" agentAutoRegisterKey="AFFEE112233445566" commandRepositoryLocation="default" serverId="82f138d2-b025-4258-81a6-e463518682f9" agentAutoRegisterKey="388b633a88de126531afa41eff9aa69e" />
   <pipelines group="Alpine">
     <pipeline name="alpn-base" isLocked="false" template="DockerBuild">
       <materials>
@@ -43,12 +43,6 @@
         <pipeline pipelineName="alpn-jre7" stageName="DockerBuild" materialName="ParentTrigger" />
       </materials>
     </pipeline>
-    <pipeline name="docker-gocd-server" template="DockerBuild">
-      <materials>
-        <git url="https://github.com/qnib/docker-gocd-server.git" />
-        <pipeline pipelineName="alpn-jre7" stageName="DockerBuild" materialName="ParentTrigger" />
-      </materials>
-    </pipeline>
     <pipeline name="alpn-infiniband" template="DockerBuild">
       <materials>
         <git url="https://github.com/qnib/alpn-infiniband.git" />
@@ -77,6 +71,12 @@
       <materials>
         <git url="https://github.com/qnib/alpn-osu-micro-benchmarks.git" />
         <pipeline pipelineName="alpn-cluster" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="gocd-server" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/docker-gocd-server.git" />
+        <pipeline pipelineName="alpn-jre7" stageName="DockerBuild" materialName="ParentTrigger" />
       </materials>
     </pipeline>
   </pipelines>
@@ -208,7 +208,5 @@ fi</value>
       </pipelines>
     </environment>
   </environments>
-  <agents>
-  </agents>
 </cruise>
 
