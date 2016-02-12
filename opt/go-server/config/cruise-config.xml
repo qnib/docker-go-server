@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cruise xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cruise-config.xsd" schemaVersion="77">
+  <server artifactsdir="artifacts" commandRepositoryLocation="default" serverId="82f138d2-b025-4258-81a6-e463518682f9" />
+  <pipelines group="Alpine">
+    <pipeline name="alpn-base" isLocked="false" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-base.git" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-supervisior" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-supervisor.git" />
+        <pipeline pipelineName="alpn-base" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+  </pipelines>
+  <templates>
+    <pipeline name="DockerBuild">
+      <stage name="DockerBuild">
+        <jobs>
+          <job name="DockerBuild">
+            <tasks>
+              <task>
+                <pluginConfiguration id="script-executor" version="1" />
+                <configuration>
+                  <property>
+                    <key>script</key>
+                    <value>docker build -t qnib/${GO_PIPELINE_NAME}:${GO_PIPELINE_COUNTER} .</value>
+                  </property>
+                </configuration>
+                <runif status="passed" />
+              </task>
+              <task>
+                <pluginConfiguration id="script-executor" version="1" />
+                <configuration>
+                  <property>
+                    <key>script</key>
+                    <value>/opt/qnib/gocd/helpers/imgcheck/imgcheck</value>
+                  </property>
+                </configuration>
+                <runif status="passed" />
+              </task>
+              <task>
+                <pluginConfiguration id="script-executor" version="1" />
+                <configuration>
+                  <property>
+                    <key>script</key>
+                    <value>docker rmi qnib/${GO_PIPELINE_NAME}:${GO_PIPELINE_COUNTER}</value>
+                  </property>
+                </configuration>
+                <runif status="failed" />
+              </task>
+              <task>
+                <pluginConfiguration id="script-executor" version="1" />
+                <configuration>
+                  <property>
+                    <key>script</key>
+                    <value>docker tag qnib/${GO_PIPELINE_NAME}:${GO_PIPELINE_COUNTER} qnib/${GO_PIPELINE_NAME}:latest</value>
+                  </property>
+                </configuration>
+                <runif status="passed" />
+              </task>
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+    </pipeline>
+  </templates>
+  <agents>
+    <agent hostname="gocd-agent1" ipaddress="172.17.0.4" uuid="a720dfe6-0849-4ea0-bd7a-a4c21117947a" />
+  </agents>
+</cruise>
+
