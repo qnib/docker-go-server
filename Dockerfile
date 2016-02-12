@@ -18,6 +18,4 @@ RUN mkdir -p /opt/go-server/plugins/external/ && \
     wget -q https://github.com/gocd-contrib/script-executor-task/releases/download/${SCRIPT_EXEC_VER}/script-executor-${SCRIPT_EXEC_VER}.jar
 RUN apk update && \
     apk add git
-ADD etc/init.d/go-server /etc/init.d/
-RUN ln -s /etc/init.d/go-server /etc/runlevels/default/
-ADD etc/conf.d/go-server /etc/conf.d/
+ADD etc/supervisord.d/gocd-server.ini /etc/supervisord.d/

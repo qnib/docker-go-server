@@ -1,2 +1,3 @@
-# docker-go-server
+# docker-gocd-server
+
 Go Continuous Delivery  Server
