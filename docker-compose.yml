@@ -1,31 +1,30 @@
 consul:
     image: qnib/consul
     hostname: consul
-    container_name: consul
+    container_name: ${USER}_consul
     dns: 127.0.0.1
     ports:
-     - "8500:8500"
+     - 8500
     environment:
      - DC_NAME=dc1
      - CONSUL_BOOTSTRAP=true
 
-go-server:
-    hostname: go-server
-    container_name: go-server
-    image: qnib/go-server
+gocd-server:
+    hostname: gocd-server
+    container_name: ${USER}_gocd-server
+    image: qnib/gocd-server
     dns: 127.0.0.1
     ports:
-     - 8153:8153
-     - 8154:8154
+     - 8153
     environment:
      - DC_NAME=dc1
     links:
      - consul:consul
 
-go-agent1:
-    hostname: go-agent1
-    container_name: go-agent1
-    image: qnib/alpn-go-agent
+gocd-agent1:
+    hostname: gocd-agent1
+    container_name: ${USER}_gocd-agent1
+    image: qnib/alpn-gocd-agent
     dns: 127.0.0.1
     environment:
      - DC_NAME=dc1
@@ -33,5 +32,4 @@ go-agent1:
      - /var/run/docker.sock:/var/run/docker.sock
     links:
      - consul:consul
-     - go-server:go-server
 

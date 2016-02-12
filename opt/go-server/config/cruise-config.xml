@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cruise xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cruise-config.xsd" schemaVersion="77">
+  <server artifactsdir="artifacts" commandRepositoryLocation="default" serverId="82f138d2-b025-4258-81a6-e463518682f9" />
+  <pipelines group="Alpine">
+    <pipeline name="alpn-base" isLocked="false" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-base.git" materialName="git-repository" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-supervisior" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-supervisor.git" />
+        <pipeline pipelineName="alpn-base" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-consul" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-consul.git" />
+        <pipeline pipelineName="alpn-supervisior" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-syslog" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-syslog.git" />
+        <pipeline pipelineName="alpn-consul" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-terminal" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-terminal.git" />
+        <pipeline pipelineName="alpn-syslog" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-jre7" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-jre7.git" />
+        <pipeline pipelineName="alpn-syslog" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-gocd-agent" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-gocd-agent.git" />
+        <pipeline pipelineName="alpn-jre7" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="docker-gocd-server" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/docker-gocd-server.git" />
+        <pipeline pipelineName="alpn-jre7" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-infiniband" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-infiniband.git" />
+        <pipeline pipelineName="alpn-terminal" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-openmpi" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-openmpi.git" />
+        <pipeline pipelineName="alpn-infiniband" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-cluster" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-cluster.git" />
+        <pipeline pipelineName="alpn-openmpi" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-go-dev" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-go-dev.git" />
+        <pipeline pipelineName="alpn-base" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-osu-micro-benchmarks" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-osu-micro-benchmarks.git" />
+        <pipeline pipelineName="alpn-cluster" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+  </pipelines>
+  <templates>
+    <pipeline name="DockerBuild">
+      <stage name="DockerBuild">
+        <jobs>
+          <job name="DockerBuild">
+            <tasks>
+              <task>
+                <pluginConfiguration id="script-executor" version="1" />
+                <configuration>
+                  <property>
+                    <key>script</key>
+                    <value>docker build -t qnib/${GO_PIPELINE_NAME}:${GO_PIPELINE_COUNTER} .</value>
+                  </property>
+                </configuration>
+                <runif status="passed" />
+              </task>
+              <task>
+                <pluginConfiguration id="script-executor" version="1" />
+                <configuration>
+                  <property>
+                    <key>script</key>
+                    <value>if [ "X${SKIP_BUILD_CHECK}" == "Xfalse" ];then&#xD;
+    /opt/qnib/gocd/helpers/imgcheck/imgcheck -tag ${DOCKER_TAG}&#xD;
+fi</value>
+                  </property>
+                </configuration>
+                <runif status="passed" />
+              </task>
+              <task>
+                <pluginConfiguration id="script-executor" version="1" />
+                <configuration>
+                  <property>
+                    <key>script</key>
+                    <value>docker rmi qnib/${GO_PIPELINE_NAME}:${GO_PIPELINE_COUNTER}</value>
+                  </property>
+                </configuration>
+                <runif status="failed" />
+              </task>
+              <task>
+                <pluginConfiguration id="script-executor" version="1" />
+                <configuration>
+                  <property>
+                    <key>script</key>
+                    <value>if [ "X${SKIP_BUILD_CHECK}" == "Xfalse" ];then&#xD;
+   docker tag qnib/${GO_PIPELINE_NAME}:${GO_PIPELINE_COUNTER} qnib/${GO_PIPELINE_NAME}:${DOCKER_TAG}&#xD;
+fi</value>
+                  </property>
+                </configuration>
+                <runif status="passed" />
+              </task>
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+    </pipeline>
+  </templates>
+  <environments>
+    <environment name="latest">
+      <environmentvariables>
+        <variable name="DOCKER_TAG">
+          <value>latest</value>
+        </variable>
+        <variable name="SKIP_BUILD_CHECK">
+          <value>false</value>
+        </variable>
+      </environmentvariables>
+      <pipelines>
+        <pipeline name="alpn-base" />
+        <pipeline name="alpn-cluster" />
+        <pipeline name="alpn-consul" />
+        <pipeline name="alpn-go-dev" />
+        <pipeline name="alpn-gocd-agent" />
+        <pipeline name="alpn-infiniband" />
+        <pipeline name="alpn-jre7" />
+        <pipeline name="alpn-openmpi" />
+        <pipeline name="alpn-osu-micro-benchmarks" />
+        <pipeline name="alpn-supervisior" />
+        <pipeline name="alpn-syslog" />
+        <pipeline name="alpn-terminal" />
+        <pipeline name="docker-gocd-server" />
+      </pipelines>
+    </environment>
+  </environments>
+</cruise>
+
