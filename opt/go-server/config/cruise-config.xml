@@ -190,7 +190,7 @@ fi</value>
         <pipeline name="alpn-terminal" />
         <pipeline name="d-consul" />
         <pipeline name="d-supervisor" />
-        <pipeline name="docker-gocd-server" />
+        <pipeline name="gocd-server" />
       </pipelines>
     </environment>
     <environment name="edge">
