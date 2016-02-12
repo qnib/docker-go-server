@@ -80,6 +80,26 @@
       </materials>
     </pipeline>
   </pipelines>
+  <pipelines group="Alpine_edge">
+    <pipeline name="alpn-base_edge" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-base.git" branch="edge" />
+      </materials>
+    </pipeline>
+    <pipeline name="alpn-supervisor_edge" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/alpn-supervisor.git" branch="edge" />
+        <pipeline pipelineName="alpn-base_edge" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
+  </pipelines>
+  <pipelines group="Debian_master">
+    <pipeline name="d-supervisor" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/d-supervisor.git" />
+      </materials>
+    </pipeline>
+  </pipelines>
   <templates>
     <pipeline name="DockerBuild">
       <stage name="DockerBuild">
@@ -91,7 +111,8 @@
                 <configuration>
                   <property>
                     <key>script</key>
-                    <value>docker build -t qnib/${GO_PIPELINE_NAME}:${GO_PIPELINE_COUNTER} .</value>
+                    <value>IMG_NAME=$(echo ${GO_PIPELINE_NAME} |awk -F\_ '{print $1}')&#xD;
+docker build -t qnib/${IMG_NAME}:${DOCKER_TAG}_${GO_PIPELINE_COUNTER} .</value>
                   </property>
                 </configuration>
                 <runif status="passed" />
@@ -113,7 +134,8 @@ fi</value>
                 <configuration>
                   <property>
                     <key>script</key>
-                    <value>docker rmi qnib/${GO_PIPELINE_NAME}:${GO_PIPELINE_COUNTER}</value>
+                    <value>IMG_NAME=$(echo ${GO_PIPELINE_NAME} |awk -F\_ '{print $1}')&#xD;
+docker rmi qnib/${IMG_NAME}:${DOCKER_TAG}_${GO_PIPELINE_COUNTER}</value>
                   </property>
                 </configuration>
                 <runif status="failed" />
@@ -123,8 +145,9 @@ fi</value>
                 <configuration>
                   <property>
                     <key>script</key>
-                    <value>if [ "X${SKIP_BUILD_CHECK}" == "Xfalse" ];then&#xD;
-   docker tag qnib/${GO_PIPELINE_NAME}:${GO_PIPELINE_COUNTER} qnib/${GO_PIPELINE_NAME}:${DOCKER_TAG}&#xD;
+                    <value>IMG_NAME=$(echo ${GO_PIPELINE_NAME} |awk -F\_ '{print $1}')&#xD;
+if [ "X${SKIP_BUILD_CHECK}" == "Xfalse" ];then&#xD;
+   docker tag qnib/${IMG_NAME}:${DOCKER_TAG}_${GO_PIPELINE_COUNTER} qnib/${IMG_NAME}:${DOCKER_TAG}&#xD;
 fi</value>
                   </property>
                 </configuration>
@@ -146,6 +169,10 @@ fi</value>
           <value>false</value>
         </variable>
       </environmentvariables>
+      <agents>
+        <physical uuid="8f07f032-4d37-4d60-be14-4b695a1d760f" />
+        <physical uuid="98b5ce3e-9b95-4756-8ed7-3820b16a5f3d" />
+      </agents>
       <pipelines>
         <pipeline name="alpn-base" />
         <pipeline name="alpn-cluster" />
@@ -162,6 +189,27 @@ fi</value>
         <pipeline name="docker-gocd-server" />
       </pipelines>
     </environment>
+    <environment name="edge">
+      <environmentvariables>
+        <variable name="DOCKER_TAG">
+          <value>edge</value>
+        </variable>
+        <variable name="SKIP_BUILD_CHECK">
+          <value>false</value>
+        </variable>
+      </environmentvariables>
+      <agents>
+        <physical uuid="8f07f032-4d37-4d60-be14-4b695a1d760f" />
+        <physical uuid="98b5ce3e-9b95-4756-8ed7-3820b16a5f3d" />
+      </agents>
+      <pipelines>
+        <pipeline name="alpn-base_edge" />
+      </pipelines>
+    </environment>
   </environments>
+  <agents>
+    <agent hostname="gocd-agent1" ipaddress="172.17.0.4" uuid="8f07f032-4d37-4d60-be14-4b695a1d760f" />
+    <agent hostname="gocd-agent2" ipaddress="172.17.0.5" uuid="98b5ce3e-9b95-4756-8ed7-3820b16a5f3d" />
+  </agents>
 </cruise>
 
