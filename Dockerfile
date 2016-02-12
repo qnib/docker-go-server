@@ -20,7 +20,7 @@ RUN mkdir -p /opt/go-server/plugins/external/ && \
     wget -q https://github.com/manojlds/gocd-docker/releases/download/${DOCKER_TASK_VER}/docker-task-assembly-${DOCKER_TASK_VER}.jar && \
     wget -q https://github.com/gocd-contrib/script-executor-task/releases/download/${SCRIPT_EXEC_VER}/script-executor-${SCRIPT_EXEC_VER}.jar && \
     wget -q https://github.com/ashwanthkumar/gocd-slack-build-notifier/releases/download/v${SLACK_NOTIFY_VER}/gocd-slack-notifier-${SLACK_NOTIFY_VER}.jar && \
-    wget -q https://github.com/rsr5/gocd-riemann-notifier/releases/download/${RIEMANN_NOTIFY_VER}/gocd-riemann-notifier-${RIEMANN_NOTIFY_VER}.jar && \
+    #wget -q https://github.com/rsr5/gocd-riemann-notifier/releases/download/${RIEMANN_NOTIFY_VER}/gocd-riemann-notifier-${RIEMANN_NOTIFY_VER}.jar && \
     wget -q https://github.com/gocd-contrib/gocd-build-status-notifier/releases/download/${GITHUB_PR_STATUS_VER}/github-pr-status-${GITHUB_PR_STATUS_VER}.jar 
 RUN apk update && \
     apk add git
