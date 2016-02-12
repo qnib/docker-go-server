@@ -175,10 +175,6 @@ fi</value>
           <value>false</value>
         </variable>
       </environmentvariables>
-      <agents>
-        <physical uuid="8f07f032-4d37-4d60-be14-4b695a1d760f" />
-        <physical uuid="489e27a6-d030-423f-8382-bfb2303ee748" />
-      </agents>
       <pipelines>
         <pipeline name="alpn-base" />
         <pipeline name="alpn-cluster" />
@@ -206,10 +202,6 @@ fi</value>
           <value>false</value>
         </variable>
       </environmentvariables>
-      <agents>
-        <physical uuid="8f07f032-4d37-4d60-be14-4b695a1d760f" />
-        <physical uuid="489e27a6-d030-423f-8382-bfb2303ee748" />
-      </agents>
       <pipelines>
         <pipeline name="alpn-base_edge" />
         <pipeline name="alpn-supervisor_edge" />
@@ -217,8 +209,6 @@ fi</value>
     </environment>
   </environments>
   <agents>
-    <agent hostname="gocd-agent1" ipaddress="172.17.0.4" uuid="8f07f032-4d37-4d60-be14-4b695a1d760f" />
-    <agent hostname="gocd-agent2" ipaddress="172.17.0.6" uuid="489e27a6-d030-423f-8382-bfb2303ee748" />
   </agents>
 </cruise>
 
