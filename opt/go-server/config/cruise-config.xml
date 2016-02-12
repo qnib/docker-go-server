@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cruise xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cruise-config.xsd" schemaVersion="77">
-  <server artifactsdir="artifacts" commandRepositoryLocation="default" serverId="82f138d2-b025-4258-81a6-e463518682f9" />
+  <server artifactsdir="artifacts" commandRepositoryLocation="default" serverId="82f138d2-b025-4258-81a6-e463518682f9" agentAutoRegisterKey="AFFEE112233445566" />
   <pipelines group="Alpine">
     <pipeline name="alpn-base" isLocked="false" template="DockerBuild">
       <materials>
@@ -99,6 +99,12 @@
         <git url="https://github.com/qnib/d-supervisor.git" />
       </materials>
     </pipeline>
+    <pipeline name="d-consul" template="DockerBuild">
+      <materials>
+        <git url="https://github.com/qnib/d-consul.git" />
+        <pipeline pipelineName="d-supervisor" stageName="DockerBuild" materialName="ParentTrigger" />
+      </materials>
+    </pipeline>
   </pipelines>
   <templates>
     <pipeline name="DockerBuild">
@@ -171,7 +177,7 @@ fi</value>
       </environmentvariables>
       <agents>
         <physical uuid="8f07f032-4d37-4d60-be14-4b695a1d760f" />
-        <physical uuid="98b5ce3e-9b95-4756-8ed7-3820b16a5f3d" />
+        <physical uuid="489e27a6-d030-423f-8382-bfb2303ee748" />
       </agents>
       <pipelines>
         <pipeline name="alpn-base" />
@@ -186,6 +192,8 @@ fi</value>
         <pipeline name="alpn-supervisior" />
         <pipeline name="alpn-syslog" />
         <pipeline name="alpn-terminal" />
+        <pipeline name="d-consul" />
+        <pipeline name="d-supervisor" />
         <pipeline name="docker-gocd-server" />
       </pipelines>
     </environment>
@@ -200,16 +208,17 @@ fi</value>
       </environmentvariables>
       <agents>
         <physical uuid="8f07f032-4d37-4d60-be14-4b695a1d760f" />
-        <physical uuid="98b5ce3e-9b95-4756-8ed7-3820b16a5f3d" />
+        <physical uuid="489e27a6-d030-423f-8382-bfb2303ee748" />
       </agents>
       <pipelines>
         <pipeline name="alpn-base_edge" />
+        <pipeline name="alpn-supervisor_edge" />
       </pipelines>
     </environment>
   </environments>
   <agents>
     <agent hostname="gocd-agent1" ipaddress="172.17.0.4" uuid="8f07f032-4d37-4d60-be14-4b695a1d760f" />
-    <agent hostname="gocd-agent2" ipaddress="172.17.0.5" uuid="98b5ce3e-9b95-4756-8ed7-3820b16a5f3d" />
+    <agent hostname="gocd-agent2" ipaddress="172.17.0.6" uuid="489e27a6-d030-423f-8382-bfb2303ee748" />
   </agents>
 </cruise>
 
