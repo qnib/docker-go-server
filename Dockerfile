@@ -19,3 +19,4 @@ RUN mkdir -p /opt/go-server/plugins/external/ && \
 RUN apk update && \
     apk add git
 ADD etc/supervisord.d/gocd-server.ini /etc/supervisord.d/
+ADD opt/qnib/gocd/server/bin/start.sh /opt/qnib/gocd/server/bin/
