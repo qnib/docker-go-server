@@ -20,8 +20,13 @@ RUN mkdir -p /opt/go-server/plugins/external/ && \
     wget -q https://github.com/manojlds/gocd-docker/releases/download/${DOCKER_TASK_VER}/docker-task-assembly-${DOCKER_TASK_VER}.jar && \
     wget -q https://github.com/gocd-contrib/script-executor-task/releases/download/${SCRIPT_EXEC_VER}/script-executor-${SCRIPT_EXEC_VER}.jar && \
     wget -q https://github.com/ashwanthkumar/gocd-slack-build-notifier/releases/download/v${SLACK_NOTIFY_VER}/gocd-slack-notifier-${SLACK_NOTIFY_VER}.jar && \
-    #wget -q https://github.com/rsr5/gocd-riemann-notifier/releases/download/${RIEMANN_NOTIFY_VER}/gocd-riemann-notifier-${RIEMANN_NOTIFY_VER}.jar && \
-    wget -q https://github.com/gocd-contrib/gocd-build-status-notifier/releases/download/${GITHUB_PR_STATUS_VER}/github-pr-status-${GITHUB_PR_STATUS_VER}.jar 
+    wget -q https://github.com/rsr5/gocd-riemann-notifier/releases/download/${RIEMANN_NOTIFY_VER}/gocd-riemann-notifier-${RIEMANN_NOTIFY_VER}.jar && \
+    wget -q https://github.com/gocd-contrib/gocd-build-status-notifier/releases/download/${GITHUB_PR_STATUS_VER}/github-pr-status-${GITHUB_PR_STATUS_VER}.jar && \
+    wget -q https://github.com/gocd-contrib/deb-repo-poller/releases/download/1.2/deb-repo-poller-1.2.jar && \
+    wget -q https://github.com/manojlds/gocd-docker/releases/download/0.1.23/docker-task-assembly-0.1.23.jar && \
+    wget -q https://github.com/Haufe-Lexware/gocd-plugins/releases/download/v1.0.0-beta/gocd-docker-pipeline-plugin-1.0.0.jar && \
+    wget -q https://github.com/Vincit/gocd-slack-task/releases/download/v1.0/gocd-slack-task-1.0.jar && \
+    wget -q https://github.com/ashwanthkumar/gocd-build-github-pull-requests/releases/download/v1.2.4/github-pr-poller-1.2.4.jar
 RUN apk update && \
     apk add git
 ADD etc/supervisord.d/gocd-server.ini /etc/supervisord.d/
