@@ -1,7 +1,7 @@
 FROM qnib/alpn-jre7
 
-ENV GOCD_VER=16.1.0 \
-    GOCD_SUBVER=2855
+ENV GOCD_VER=16.3.0 \
+    GOCD_SUBVER=3183
 RUN apk update && \
     apk add wget && \
     wget -qO /tmp/go-server.zip https://download.go.cd/binaries/${GOCD_VER}-${GOCD_SUBVER}/generic/go-server-${GOCD_VER}-${GOCD_SUBVER}.zip && \
@@ -12,9 +12,11 @@ RUN apk update && \
 RUN chmod +x /opt/go-server/*server.sh
 ENV DOCKER_TASK_VER=0.1.23 \
     SCRIPT_EXEC_VER=0.2 \
-    SLACK_NOTIFY_VER=1.1.2 \
+    SLACK_NOTIFY_VER=1.2.1 \
     RIEMANN_NOTIFY_VER=0.8 \
-    GITHUB_PR_STATUS_VER=1.1
+    GITHUB_PR_STATUS_VER=1.1 \
+    SLACK_TASK_VER=1.2 \
+    GITHUB_PR_BUILD=1.2.4
 RUN mkdir -p /opt/go-server/plugins/external/ && \
     cd /opt/go-server/plugins/external/ && \
     wget -q https://github.com/manojlds/gocd-docker/releases/download/${DOCKER_TASK_VER}/docker-task-assembly-${DOCKER_TASK_VER}.jar && \
@@ -25,8 +27,9 @@ RUN mkdir -p /opt/go-server/plugins/external/ && \
     wget -q https://github.com/gocd-contrib/deb-repo-poller/releases/download/1.2/deb-repo-poller-1.2.jar && \
     wget -q https://github.com/manojlds/gocd-docker/releases/download/0.1.23/docker-task-assembly-0.1.23.jar && \
     wget -q https://github.com/Haufe-Lexware/gocd-plugins/releases/download/v1.0.0-beta/gocd-docker-pipeline-plugin-1.0.0.jar && \
-    wget -q https://github.com/Vincit/gocd-slack-task/releases/download/v1.0/gocd-slack-task-1.0.jar && \
-    wget -q https://github.com/ashwanthkumar/gocd-build-github-pull-requests/releases/download/v1.2.4/github-pr-poller-1.2.4.jar
+    wget -q https://github.com/Vincit/gocd-slack-task/releases/download/v${SLACK_TASK_VER}/gocd-slack-task-${SLACK_TASK_VER}.jar && \
+    wget -q https://github.com/ashwanthkumar/gocd-build-github-pull-requests/releases/download/v${GITHUB_PR_BUILD}/github-pr-poller-${GITHUB_PR_BUILD}.jar \
+ && wget -q https://github.com/ashwanthkumar/gocd-build-github-pull-requests/releases/download/v${GITHUB_PR_BUILD}/git-fb-poller-${GITHUB_PR_BUILD}.jar 
 RUN apk update && \
     apk add git
 ADD etc/supervisord.d/gocd-server.ini /etc/supervisord.d/
