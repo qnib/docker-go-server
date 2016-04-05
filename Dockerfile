@@ -16,7 +16,9 @@ ENV DOCKER_TASK_VER=0.1.23 \
     GITHUB_PR_STATUS_VER=1.1 \
     SLACK_TASK_VER=1.2 \
     GITHUB_PR_BUILD=1.2.4 \
-    GEN_ARTIFACT_POLLER=0.1.0
+    GEN_ARTIFACT_POLLER=0.1.0 \
+    S3_POLLER=1.0.0 \
+    S3_ARTIFACTS_POLLER=2.0.2
 RUN mkdir -p /opt/go-server/plugins/external/ \
  && cd /opt/go-server/plugins/external/ \
  && wget -q https://github.com/manojlds/gocd-docker/releases/download/${DOCKER_TASK_VER}/docker-task-assembly-${DOCKER_TASK_VER}.jar \
@@ -30,7 +32,11 @@ RUN mkdir -p /opt/go-server/plugins/external/ \
  && wget -q https://github.com/Vincit/gocd-slack-task/releases/download/v${SLACK_TASK_VER}/gocd-slack-task-${SLACK_TASK_VER}.jar \
  && wget -q https://github.com/ashwanthkumar/gocd-build-github-pull-requests/releases/download/v${GITHUB_PR_BUILD}/github-pr-poller-${GITHUB_PR_BUILD}.jar \
  && wget -q https://github.com/ashwanthkumar/gocd-build-github-pull-requests/releases/download/v${GITHUB_PR_BUILD}/git-fb-poller-${GITHUB_PR_BUILD}.jar \
- && wget -q https://github.com/varchev/go-generic-artifactory-poller/releases/download/${GEN_ARTIFACT_POLLER}/go-generic-artifactory-poller.jar
+ && wget -q https://github.com/varchev/go-generic-artifactory-poller/releases/download/${GEN_ARTIFACT_POLLER}/go-generic-artifactory-poller.jar \
+ && wget -q https://github.com/schibsted/gocd-s3-poller/releases/download/${S3_POLLER}/gocd-s3-poller-${S3_POLLER}.jar \
+ && wget -q https://github.com/ind9/gocd-s3-artifacts/releases/download/v${S3_ARTIFACTS_POLLER}/s3material-assembly-${S3_ARTIFACTS_POLLER}.jar \
+ && wget -q https://github.com/ind9/gocd-s3-artifacts/releases/download/v${S3_ARTIFACTS_POLLER}/s3fetch-assembly-${S3_ARTIFACTS_POLLER}.jar \
+ && wget -q https://github.com/ind9/gocd-s3-artifacts/releases/download/v${S3_ARTIFACTS_POLLER}/s3publish-assembly-${S3_ARTIFACTS_POLLER}.jar \
 ADD etc/supervisord.d/gocd-server.ini /etc/supervisord.d/
 ADD opt/qnib/gocd/server/bin/start.sh \
     opt/qnib/gocd/server/bin/restore.sh \
