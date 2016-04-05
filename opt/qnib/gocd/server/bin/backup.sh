@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -z ${GOCD_CREDENTIALS} ]then
+if [ ! -z ${GOCD_CREDENTIALS} ];then
     GOCD_AUTH="-u '${GOCD_CREDENTIALS}'" 
 fi
 curl 'http://localhost:8153/go/api/backups' \
