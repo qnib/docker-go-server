@@ -36,7 +36,7 @@ RUN mkdir -p /opt/go-server/plugins/external/ \
  && wget -q https://github.com/schibsted/gocd-s3-poller/releases/download/${S3_POLLER}/gocd-s3-poller-${S3_POLLER}.jar \
  && wget -q https://github.com/ind9/gocd-s3-artifacts/releases/download/v${S3_ARTIFACTS_POLLER}/s3material-assembly-${S3_ARTIFACTS_POLLER}.jar \
  && wget -q https://github.com/ind9/gocd-s3-artifacts/releases/download/v${S3_ARTIFACTS_POLLER}/s3fetch-assembly-${S3_ARTIFACTS_POLLER}.jar \
- && wget -q https://github.com/ind9/gocd-s3-artifacts/releases/download/v${S3_ARTIFACTS_POLLER}/s3publish-assembly-${S3_ARTIFACTS_POLLER}.jar \
+ && wget -q https://github.com/ind9/gocd-s3-artifacts/releases/download/v${S3_ARTIFACTS_POLLER}/s3publish-assembly-${S3_ARTIFACTS_POLLER}.jar
 ADD etc/supervisord.d/gocd-server.ini /etc/supervisord.d/
 ADD opt/qnib/gocd/server/bin/start.sh \
     opt/qnib/gocd/server/bin/restore.sh \
