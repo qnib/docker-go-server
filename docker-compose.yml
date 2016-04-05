@@ -20,6 +20,8 @@ gocd-server:
      - DC_NAME=dc1
     links:
      - consul:consul
+    volumes:
+     - ./serverBackups/:/opt/go-server/artifacts/serverBackups/
 
 gocd-agent1:
     hostname: gocd-agent1
