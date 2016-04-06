@@ -1,7 +1,5 @@
-FROM qnib/alpn-jre7
+FROM qnib/gocd-base
 
-ENV GOCD_VER=16.3.0 \
-    GOCD_SUBVER=3183
 RUN apk add --update git wget \
  && wget -qO /tmp/go-server.zip https://download.go.cd/binaries/${GOCD_VER}-${GOCD_SUBVER}/generic/go-server-${GOCD_VER}-${GOCD_SUBVER}.zip \
  && mkdir -p /opt/ && cd /opt/ \
@@ -40,6 +38,5 @@ RUN mkdir -p /opt/go-server/plugins/external/ \
 ADD etc/supervisord.d/gocd-server.ini /etc/supervisord.d/
 ADD opt/qnib/gocd/server/bin/start.sh \
     opt/qnib/gocd/server/bin/restore.sh \
-    opt/qnib/gocd/server/bin/backup.sh \
     /opt/qnib/gocd/server/bin/
 ADD opt/go-server/config/cruise-config.xml /opt/go-server/config/
