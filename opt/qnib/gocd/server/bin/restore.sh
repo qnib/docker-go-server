@@ -4,7 +4,7 @@ set -ex
 SERVER_INSTALLATION_DIR=/opt/go-server
 SERVER_BKP_DIR=/opt/go-server/artifacts/serverBackups/
 ## find latest backup
-LATEST=$(ls ${SERVER_BKP_DIR} |tail -n1)
+LATEST=$(ls ${SERVER_BKP_DIR} |grep ^backup |tail -n1)
 
 ## check if all files are present
 test -f ${SERVER_BKP_DIR}/${LATEST}/db.zip
