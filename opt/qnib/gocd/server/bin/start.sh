@@ -5,6 +5,10 @@ if [ $(ls /opt/go-server/artifacts/serverBackups/ |grep backup_ |wc -l) -ne 0 ];
     /opt/qnib/gocd/server/bin/restore.sh
 fi
 
+if [ "X${GOCD_SERVER_CLEAN_WORKSPACE}" == "Xtrue" ];then
+    rm -f /opt/go-server/config/*
+fi
+
 /opt/go-server/server.sh 2>&1 1>/var/log/go-server.log
 echo $$ > /opt/go-server/go-server.pid
 tail -f /var/log/go-server.log

@@ -18,6 +18,7 @@ gocd-server:
      - 8153
     environment:
      - DC_NAME=dc1
+     - GOCD_SERVER_CLEAN_WORKSPACE=true
     links:
      - consul:consul
     volumes:

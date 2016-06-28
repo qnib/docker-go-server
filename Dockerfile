@@ -7,23 +7,24 @@ RUN apk add --update git wget curl \
  && mv /opt/go-server-${GOCD_VER} /opt/go-server \
  && rm -rf /var/cache/apk/* /tmp/*
 RUN chmod +x /opt/go-server/*server.sh
-ENV DOCKER_TASK_VER=0.1.23 \
+ENV DOCKER_TASK_VER=0.1.27 \
     SCRIPT_EXEC_VER=0.2 \
-    SLACK_NOTIFY_VER=1.2.1 \
+    SLACK_NOTIFY_VER=1.3.0 \
     GITHUB_PR_STATUS_VER=1.1 \
+    DEB_REPO_POLLER_VER=1.2 \
     SLACK_TASK_VER=1.2 \
     GITHUB_PR_BUILD=1.2.4 \
     GEN_ARTIFACT_POLLER=0.1.0 \
     S3_POLLER=1.0.0 \
-    S3_ARTIFACTS_POLLER=2.0.2
+    S3_ARTIFACTS_POLLER=2.0.2 \
+    GOCD_SERVER_CLEAN_WORKSPACE=false
 RUN mkdir -p /opt/go-server/plugins/external/ \
  && cd /opt/go-server/plugins/external/ \
  && wget -q https://github.com/manojlds/gocd-docker/releases/download/${DOCKER_TASK_VER}/docker-task-assembly-${DOCKER_TASK_VER}.jar \
  && wget -q https://github.com/gocd-contrib/script-executor-task/releases/download/${SCRIPT_EXEC_VER}/script-executor-${SCRIPT_EXEC_VER}.jar \
  && wget -q https://github.com/ashwanthkumar/gocd-slack-build-notifier/releases/download/v${SLACK_NOTIFY_VER}/gocd-slack-notifier-${SLACK_NOTIFY_VER}.jar \
  && wget -q https://github.com/gocd-contrib/gocd-build-status-notifier/releases/download/${GITHUB_PR_STATUS_VER}/github-pr-status-${GITHUB_PR_STATUS_VER}.jar \
- && wget -q https://github.com/gocd-contrib/deb-repo-poller/releases/download/1.2/deb-repo-poller-1.2.jar \
- && wget -q https://github.com/manojlds/gocd-docker/releases/download/0.1.23/docker-task-assembly-0.1.23.jar \
+ && wget -q https://github.com/gocd-contrib/deb-repo-poller/releases/download/${DEB_REPO_POLLER_VER}/deb-repo-poller-${DEB_REPO_POLLER_VER}.jar \
  && wget -q https://github.com/Haufe-Lexware/gocd-plugins/releases/download/v1.0.0-beta/gocd-docker-pipeline-plugin-1.0.0.jar \
  && wget -q https://github.com/Vincit/gocd-slack-task/releases/download/v${SLACK_TASK_VER}/gocd-slack-task-${SLACK_TASK_VER}.jar \
  && wget -q https://github.com/ashwanthkumar/gocd-build-github-pull-requests/releases/download/v${GITHUB_PR_BUILD}/github-pr-poller-${GITHUB_PR_BUILD}.jar \
