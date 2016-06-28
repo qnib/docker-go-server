@@ -1,4 +1,4 @@
-FROM qnib/gocd-base
+FROM qnib/gocd-base:16.6.0
 
 RUN apk add --update git wget curl \
  && wget -qO /tmp/go-server.zip https://download.go.cd/binaries/${GOCD_VER}-${GOCD_SUBVER}/generic/go-server-${GOCD_VER}-${GOCD_SUBVER}.zip \
@@ -38,3 +38,4 @@ ADD opt/qnib/gocd/server/bin/start.sh \
     opt/qnib/gocd/server/bin/restore.sh \
     /opt/qnib/gocd/server/bin/
 ADD opt/go-server/config/cruise-config.xml /opt/go-server/config/
+ADD etc/consul.d/gocd-server.json /etc/consul.d/

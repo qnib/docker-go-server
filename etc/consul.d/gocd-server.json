@@ -1,0 +1,14 @@
+{
+  "services": [
+    {
+        "id": "gocd-server",
+        "name": "gocd-server",
+        "tags": ["http"],
+        "port": 8153,
+        "checks": [{
+            "script": "echo '# curl -sI http://localhost:8153' ; curl -sI http://localhost:8153",
+            "interval": "10s"
+        }]
+    }
+  ]
+}

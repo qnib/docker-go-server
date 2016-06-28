@@ -12,13 +12,12 @@ consul:
 gocd-server:
     hostname: gocd-server
     container_name: ${USER}_gocd-server
-    image: qnib/gocd-server
+    image: qnib/gocd-server:16.6.0
     dns: 127.0.0.1
     ports:
      - 8153
     environment:
      - DC_NAME=dc1
-     - SUPERVISOR_SKIP_SRV=gocd-server
     links:
      - consul:consul
     volumes:
@@ -28,35 +27,12 @@ gocd-server:
 gocd-agent1:
     hostname: gocd-agent1
     container_name: ${USER}_gocd-agent1
-    image: qnib/alpn-gocd-agent
+    image: qnib/alpn-gocd-agent:16.6.0
     dns: 127.0.0.1
+    privileged: true
     environment:
      - DC_NAME=dc1
-    volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
+     - GOCD_LOCAL_DOCKERENGINE=true
     links:
      - consul:consul
 
-gocd-agent2:
-    hostname: gocd-agent2
-    container_name: ${USER}_gocd-agent2
-    image: qnib/alpn-gocd-agent
-    dns: 127.0.0.1
-    environment:
-     - DC_NAME=dc1
-    volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
-    links:
-     - consul:consul
-
-gocd-agent3:
-    hostname: gocd-agent3
-    container_name: ${USER}_gocd-agent3
-    image: qnib/alpn-gocd-agent
-    dns: 127.0.0.1
-    environment:
-     - DC_NAME=dc1
-    volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
-    links:
-     - consul:consul
