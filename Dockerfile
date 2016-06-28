@@ -1,6 +1,6 @@
 FROM qnib/gocd-base
 
-RUN apk add --update git wget \
+RUN apk add --update git wget curl \
  && wget -qO /tmp/go-server.zip https://download.go.cd/binaries/${GOCD_VER}-${GOCD_SUBVER}/generic/go-server-${GOCD_VER}-${GOCD_SUBVER}.zip \
  && mkdir -p /opt/ && cd /opt/ \
  && unzip -q /tmp/go-server.zip && rm -f /tmp/go-server.zip \

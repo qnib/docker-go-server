@@ -1,5 +1,5 @@
 consul:
-    image: qnib/consul
+    image: qnib/alpn-consul
     hostname: consul
     container_name: ${USER}_consul
     dns: 127.0.0.1
@@ -18,9 +18,11 @@ gocd-server:
      - 8153
     environment:
      - DC_NAME=dc1
+     - SUPERVISOR_SKIP_SRV=gocd-server
     links:
      - consul:consul
     volumes:
+     - ./config/:/config/
      - ./serverBackups/:/opt/go-server/artifacts/serverBackups/
 
 gocd-agent1:
