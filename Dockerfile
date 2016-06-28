@@ -10,14 +10,12 @@ RUN chmod +x /opt/go-server/*server.sh
 ENV DOCKER_TASK_VER=0.1.23 \
     SCRIPT_EXEC_VER=0.2 \
     SLACK_NOTIFY_VER=1.2.1 \
-    RIEMANN_NOTIFY_VER=0.8 \
     GITHUB_PR_STATUS_VER=1.1 \
     SLACK_TASK_VER=1.2 \
     GITHUB_PR_BUILD=1.2.4 \
     GEN_ARTIFACT_POLLER=0.1.0 \
     S3_POLLER=1.0.0 \
     S3_ARTIFACTS_POLLER=2.0.2
-#&& wget -q https://github.com/rsr5/gocd-riemann-notifier/releases/download/${RIEMANN_NOTIFY_VER}/gocd-riemann-notifier-${RIEMANN_NOTIFY_VER}.jar \
 RUN mkdir -p /opt/go-server/plugins/external/ \
  && cd /opt/go-server/plugins/external/ \
  && wget -q https://github.com/manojlds/gocd-docker/releases/download/${DOCKER_TASK_VER}/docker-task-assembly-${DOCKER_TASK_VER}.jar \
