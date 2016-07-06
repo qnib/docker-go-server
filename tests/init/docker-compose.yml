@@ -7,7 +7,7 @@ services:
     networks:
      - gocd
     ports:
-     - 8500:8500
+     - 8500
     environment:
      - DC_NAME=gocd-dc
      - CONSUL_BOOTSTRAP=true
@@ -22,7 +22,7 @@ services:
     networks:
      - gocd
     ports:
-     - 8153:8153
+     - 8153
     environment:
      - DC_NAME=gocd-dc
      - GOCD_SERVER_CLEAN_WORKSPACE=false
