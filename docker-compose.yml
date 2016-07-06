@@ -27,8 +27,8 @@ services:
      - DC_NAME=gocd-dc
      - GOCD_SERVER_CLEAN_WORKSPACE=false
      - CONSUL_CLUSTER_IPS=consul
-    #volumes:
-    # - ./serverBackups/:/opt/go-server/artifacts/serverBackups/
+    volumes:
+     - ./serverBackups/:/opt/go-server/artifacts/serverBackups/
 
   gocd-agent1:
     hostname: gocd-agent1
