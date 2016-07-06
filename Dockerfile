@@ -38,5 +38,5 @@ ADD etc/supervisord.d/gocd-server.ini /etc/supervisord.d/
 ADD opt/qnib/gocd/server/bin/start.sh \
     opt/qnib/gocd/server/bin/restore.sh \
     /opt/qnib/gocd/server/bin/
-ADD opt/go-server/config/cruise-config.xml /opt/go-server/config/
+ADD opt/go-server/config/alpine.xml /opt/go-server/config/cruise-config.xml
 ADD etc/consul.d/gocd-server.json /etc/consul.d/
