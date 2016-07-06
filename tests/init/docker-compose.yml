@@ -3,7 +3,6 @@ services:
   consul:
     image: qnib/alpn-consul
     hostname: consul
-    container_name: ${USER}_consul
     networks:
      - gocd
     ports:
@@ -14,7 +13,6 @@ services:
 
   gocd-server:
     hostname: gocd-server
-    container_name: ${USER}_gocd-server
     image: qnib/gocd-server
     dns:
       - consul
@@ -32,7 +30,6 @@ services:
 
   gocd-agent1:
     hostname: gocd-agent1
-    container_name: ${USER}_gocd-agent1
     image: qnib/alpn-gocd-agent
     networks:
      - gocd
