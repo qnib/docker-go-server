@@ -1,9 +1,13 @@
 #!/bin/bash
 
+function ccli {
+    docker run -ti --net stacktest_gocd qnib/alpn-consul consul-cli $@
+}
+
 count=0
 while [ true ];do
     echo "# Wait for consul service to 'passing'"
-    consul-cli health service consul |egrep "Status.*passing"
+    ccli --consul consul:8500 health service consul |egrep "Status.*passing"
     if [ $? -eq 0 ];then
         echo ""
         echo "## Took ${count} seconds"
