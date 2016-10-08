@@ -47,5 +47,5 @@ ADD opt/qnib/gocd/server/bin/start.sh \
     opt/qnib/gocd/server/bin/restore.sh \
     opt/qnib/gocd/server/bin/healthcheck.sh \
     /opt/qnib/gocd/server/bin/
-ADD opt/go-server/config/alpine.xml /opt/go-server/config/cruise-config.xml
+ADD opt/go-server/config/cruise-config.xml /opt/go-server/config/
 ADD etc/consul.d/gocd-server.json /etc/consul.d/
