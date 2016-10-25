@@ -1,6 +1,6 @@
 FROM qnib/alpn-jre8
 
-RUN apk --no-cache add curl git \
+RUN apk --no-cache add curl git openssl \
  && curl -Ls https://github.com/qnib/go-github/releases/download/0.2.2/go-github_0.2.2_MuslLinux > /usr/local/bin/go-github \
  && chmod +x /usr/local/bin/go-github
 RUN echo "# consul-content: $(/usr/local/bin/go-github rLatestUrl --ghorg qnib --ghrepo service-scripts --regex ".*\.tar" --limit 1)" \
