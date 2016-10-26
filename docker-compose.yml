@@ -3,19 +3,19 @@ services:
   consul:
     image: qnib/alpn-consul
     hostname: consul
-    container_name: ${USER}_consul
+    container_name: consul
     networks:
      - gocd
     ports:
      - 8500:8500
     environment:
      - DC_NAME=gocd-dc
-     - CONSUL_BOOTSTRAP=true
+     - CONSUL_BOOTSTRAP_EXPECTED=1
 
   gocd-server:
     hostname: gocd-server
-    container_name: ${USER}_gocd-server
-    image: qnib/gocd-server
+    container_name: gocd-server
+    image: qnib/gocd-server:d12
     dns:
       - consul
       - 8.8.8.8
@@ -32,7 +32,7 @@ services:
 
   gocd-agent1:
     hostname: gocd-agent1
-    container_name: ${USER}_gocd-agent1
+    container_name: gocd-agent1
     image: qnib/alpn-gocd-agent
     networks:
      - gocd
