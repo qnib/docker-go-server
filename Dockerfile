@@ -1,30 +1,31 @@
 FROM qnib/alpn-jre8
 
+ENV GOCD_AGENT_AUTOENABLE_KEY=qnibFTW \
+    GOCD_SERVER_CLEAN_WORKSPACE=false
+
 RUN apk --no-cache add curl git openssl \
  && curl -Ls https://github.com/qnib/go-github/releases/download/0.2.2/go-github_0.2.2_MuslLinux > /usr/local/bin/go-github \
- && chmod +x /usr/local/bin/go-github
-RUN echo "# consul-content: $(/usr/local/bin/go-github rLatestUrl --ghorg qnib --ghrepo service-scripts --regex ".*\.tar" --limit 1)" \
- && curl -Ls $(/usr/local/bin/go-github rLatestUrl --ghorg qnib --ghrepo service-scripts --regex ".*\.tar" --limit 1) |tar xf - -C /opt/
-RUN source /opt/service-scripts/gocd/common/version \
- && curl -Ls --url https://download.go.cd/binaries/${GOCD_VER}-${GOCD_SUBVER}/generic/go-server-${GOCD_VER}-${GOCD_SUBVER}.zip > /tmp/go-server.zip
-RUN source /opt/service-scripts/gocd/common/version \
+ && chmod +x /usr/local/bin/go-github \
+ && echo "# consul-content: $(/usr/local/bin/go-github rLatestUrl --ghorg qnib --ghrepo service-scripts --regex ".*\.tar" --limit 1)" \
+ && curl -Ls $(/usr/local/bin/go-github rLatestUrl --ghorg qnib --ghrepo service-scripts --regex ".*\.tar" --limit 1) |tar xf - -C /opt/ \
+ && source /opt/service-scripts/gocd/common/version \
+ && curl -Ls --url https://download.go.cd/binaries/${GOCD_VER}-${GOCD_SUBVER}/generic/go-server-${GOCD_VER}-${GOCD_SUBVER}.zip > /tmp/go-server.zip \
+ && source /opt/service-scripts/gocd/common/version \
  && mkdir -p /opt/ \
  && unzip -q -d /opt/ /tmp/go-server.zip \
  && rm -f /tmp/go-server.zip \
  && mv /opt/go-server-${GOCD_VER} /opt/go-server \
- && rm -rf /var/cache/apk/* /tmp/*
-RUN chmod +x /opt/go-server/*server.sh
-ENV DOCKER_TASK_VER=0.1.27 \
-    SCRIPT_EXEC_VER=0.2 \
-    SLACK_NOTIFY_VER=1.3.0 \
-    GITHUB_PR_STATUS_VER=1.2 \
-    DEB_REPO_POLLER_VER=1.2 \
-    SLACK_TASK_VER=1.2 \
-    GITHUB_PR_BUILD=1.2.4 \
-    GEN_ARTIFACT_POLLER=0.1.0 \
-    S3_POLLER=1.0.0 \
-    S3_ARTIFACTS_POLLER=2.0.2 \
-    GOCD_SERVER_CLEAN_WORKSPACE=false
+ && chmod +x /opt/go-server/*server.sh
+ARG DOCKER_TASK_VER=0.1.27
+ARG SCRIPT_EXEC_VER=0.2
+ARG SLACK_NOTIFY_VER=1.3.0
+ARG GITHUB_PR_STATUS_VER=1.2
+ARG DEB_REPO_POLLER_VER=1.2
+ARG SLACK_TASK_VER=1.2
+ARG GITHUB_PR_BUILD=1.2.4
+ARG GEN_ARTIFACT_POLLER=0.1.0
+ARG S3_POLLER=1.0.0
+ARG S3_ARTIFACTS_POLLER=2.0.2
 RUN mkdir -p /opt/go-server/plugins/external/ \
  && cd /opt/go-server/plugins/external/ \
  #&& wget -q https://github.com/manojlds/gocd-docker/releases/download/${DOCKER_TASK_VER}/docker-task-assembly-${DOCKER_TASK_VER}.jar \
@@ -47,5 +48,6 @@ ADD opt/qnib/gocd/server/bin/start.sh \
     opt/qnib/gocd/server/bin/restore.sh \
     opt/qnib/gocd/server/bin/healthcheck.sh \
     /opt/qnib/gocd/server/bin/
-ADD opt/go-server/config/cruise-config.xml /opt/go-server/config/
+ADD etc/consul-templates/gocd/server/cruise-config.xml.ctmpl \
+    /etc/consul-templates/gocd/server/
 ADD etc/consul.d/gocd-server.json /etc/consul.d/

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cruise xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cruise-config.xsd" schemaVersion="87">
-  <server artifactsdir="artifacts" agentAutoRegisterKey="10655612-ada1-4e62-895a-2fb246809fdc" commandRepositoryLocation="default" serverId="039241f8-d889-42c2-9aab-18b8b92f0c3d" />
+  <server artifactsdir="artifacts" agentAutoRegisterKey="{{ env "GOCD_AGENT_AUTOENABLE_KEY" }}" commandRepositoryLocation="default" />
   <templates>
     <pipeline name="DockerBuild">
       <stage name="DockerBuild">
