@@ -2,14 +2,15 @@ FROM qnib/alpn-jre8
 
 ENV GOCD_AGENT_AUTOENABLE_KEY=qnibFTW \
     GOCD_SERVER_CLEAN_WORKSPACE=false
-
+ARG GOCD_URL=https://download.gocd.io/binaries
 RUN apk --no-cache add curl git openssl \
  && curl -Ls https://github.com/qnib/go-github/releases/download/0.2.2/go-github_0.2.2_MuslLinux > /usr/local/bin/go-github \
  && chmod +x /usr/local/bin/go-github \
  && echo "# consul-content: $(/usr/local/bin/go-github rLatestUrl --ghorg qnib --ghrepo service-scripts --regex ".*\.tar" --limit 1)" \
  && curl -Ls $(/usr/local/bin/go-github rLatestUrl --ghorg qnib --ghrepo service-scripts --regex ".*\.tar" --limit 1) |tar xf - -C /opt/ \
  && source /opt/service-scripts/gocd/common/version \
- && curl -Ls --url https://download.go.cd/binaries/${GOCD_VER}-${GOCD_SUBVER}/generic/go-server-${GOCD_VER}-${GOCD_SUBVER}.zip > /tmp/go-server.zip \
+ && echo "https://download.go.cd/binaries/${GOCD_VER}-${GOCD_SUBVER}/generic/go-server-${GOCD_VER}-${GOCD_SUBVER}.zip" \
+ && curl -Ls --url ${GOCD_URL}/${GOCD_VER}-${GOCD_SUBVER}/generic/go-server-${GOCD_VER}-${GOCD_SUBVER}.zip > /tmp/go-server.zip \
  && source /opt/service-scripts/gocd/common/version \
  && mkdir -p /opt/ \
  && unzip -q -d /opt/ /tmp/go-server.zip \
